@@ -1029,3 +1029,4 @@
 /home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/obj/Debug/net8.0/refint/EventEaseApp.dll
 /home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/obj/Debug/net8.0/EventEaseApp.pdb
 /home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/obj/Debug/net8.0/ref/EventEaseApp.dll
+/home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/obj/Debug/net8.0/EventEaseApp.sourcelink.json

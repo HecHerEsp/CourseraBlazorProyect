@@ -1,0 +1,58 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input class="form-control" value="@Nombre" @oninput="OnNombreChanged" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha</label>
+            <input type="date" class="form-control" value="@FechaString" @onchange="OnFechaChanged" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ubicación</label>
+            <input class="form-control" value="@Ubicacion" @oninput="OnUbicacionChanged" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Nombre { get; set; } = "Evento de ejemplo";
+
+    [Parameter]
+    public EventCallback<string> NombreChanged { get; set; }
+
+    [Parameter]
+    public DateTime Fecha { get; set; } = DateTime.Today;
+
+    [Parameter]
+    public EventCallback<DateTime> FechaChanged { get; set; }
+
+    [Parameter]
+    public string Ubicacion { get; set; } = "Ubicación no disponible";
+
+    [Parameter]
+    public EventCallback<string> UbicacionChanged { get; set; }
+
+    private string FechaString => Fecha.ToString("yyyy-MM-dd");
+
+    private async Task OnNombreChanged(ChangeEventArgs e)
+    {
+        await NombreChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
+    }
+
+    private async Task OnFechaChanged(ChangeEventArgs e)
+    {
+        if (DateTime.TryParse(e.Value?.ToString(), out var fecha))
+        {
+            await FechaChanged.InvokeAsync(fecha);
+        }
+    }
+
+    private async Task OnUbicacionChanged(ChangeEventArgs e)
+    {
+        await UbicacionChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
+    }
+}
