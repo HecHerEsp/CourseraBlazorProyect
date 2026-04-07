@@ -1,0 +1,57 @@
+@page "/event-detail/{id:int}"
+
+@inject EventsService EventsService
+@inject NavigationManager Navigation
+
+<PageTitle>Detalle de Evento</PageTitle>
+
+@if (Evento == null)
+{
+    <div class="alert alert-danger">
+        <h4>Evento no encontrado</h4>
+        <p>El evento con ID @Id no existe. Redirigiendo a la lista de eventos...</p>
+    </div>
+    @code {
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender && Evento == null)
+            {
+                await Task.Delay(2000); // Esperar 2 segundos para mostrar el mensaje
+                Navigation.NavigateTo("/events");
+            }
+        }
+    }
+}
+else
+{
+    <h1>Editar Evento</h1>
+
+    <EventCard EventModelInstance="@Evento" OnValidSubmit="SaveChanges" />
+
+    <div class="mt-3">
+        <button class="btn btn-secondary ms-2" @onclick="GoBack">Volver a la Lista</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private EventModel? Evento { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Evento = EventsService.GetEventById(Id);
+    }
+
+    private void SaveChanges(EventModel updatedEvent)
+    {
+        EventsService.UpdateEvent(updatedEvent);
+        Navigation.NavigateTo("/events");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/events");
+    }
+}

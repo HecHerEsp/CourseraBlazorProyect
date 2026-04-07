@@ -1,58 +1,42 @@
-<div class="card mb-3">
-    <div class="card-body">
-        <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input class="form-control" value="@Nombre" @oninput="OnNombreChanged" />
-        </div>
+<EditForm Model="@EventModelInstance" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-        <div class="mb-3">
-            <label class="form-label">Fecha</label>
-            <input type="date" class="form-control" value="@FechaString" @onchange="OnFechaChanged" />
-        </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <InputText class="form-control" @bind-Value="EventModelInstance.Nombre" />
+                <ValidationMessage For="@(() => EventModelInstance.Nombre)" />
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">Ubicación</label>
-            <input class="form-control" value="@Ubicacion" @oninput="OnUbicacionChanged" />
+            <div class="mb-3">
+                <label class="form-label">Fecha</label>
+                <InputDate class="form-control" @bind-Value="EventModelInstance.Fecha" />
+                <ValidationMessage For="@(() => EventModelInstance.Fecha)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ubicación</label>
+                <InputText class="form-control" @bind-Value="EventModelInstance.Ubicacion" />
+                <ValidationMessage For="@(() => EventModelInstance.Ubicacion)" />
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </div>
     </div>
-</div>
+</EditForm>
 
 @code {
     [Parameter]
-    public string Nombre { get; set; } = "Evento de ejemplo";
+    public EventModel EventModelInstance { get; set; } = new();
 
     [Parameter]
-    public EventCallback<string> NombreChanged { get; set; }
+    public EventCallback<EventModel> OnValidSubmit { get; set; }
 
-    [Parameter]
-    public DateTime Fecha { get; set; } = DateTime.Today;
-
-    [Parameter]
-    public EventCallback<DateTime> FechaChanged { get; set; }
-
-    [Parameter]
-    public string Ubicacion { get; set; } = "Ubicación no disponible";
-
-    [Parameter]
-    public EventCallback<string> UbicacionChanged { get; set; }
-
-    private string FechaString => Fecha.ToString("yyyy-MM-dd");
-
-    private async Task OnNombreChanged(ChangeEventArgs e)
+    private async Task HandleValidSubmit()
     {
-        await NombreChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
-    }
-
-    private async Task OnFechaChanged(ChangeEventArgs e)
-    {
-        if (DateTime.TryParse(e.Value?.ToString(), out var fecha))
-        {
-            await FechaChanged.InvokeAsync(fecha);
-        }
-    }
-
-    private async Task OnUbicacionChanged(ChangeEventArgs e)
-    {
-        await UbicacionChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
+        await OnValidSubmit.InvokeAsync(EventModelInstance);
     }
 }

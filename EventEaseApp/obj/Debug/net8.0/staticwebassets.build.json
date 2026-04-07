@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QKylDDWAgnH61XOJQ9NNM+LS+i5jjEb6SrCgREoJpIo=",
+  "Hash": "/+74bTausTAv3giSfAVIoto6AxU7FxXCMylZvgByCoU=",
   "Source": "EventEaseApp",
   "BasePath": "/",
   "Mode": "Root",
@@ -7919,25 +7919,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/index.html"
-    },
-    {
-      "Identity": "/home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/wwwroot/sample-data/weather.json",
-      "SourceId": "EventEaseApp",
-      "SourceType": "Discovered",
-      "ContentRoot": "/home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/wwwroot/",
-      "BasePath": "/",
-      "RelativePath": "sample-data/weather.json",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/sample-data/weather.json"
     }
   ]
 }

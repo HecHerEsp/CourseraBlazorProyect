@@ -1,0 +1,43 @@
+@page "/events"
+
+@inject NavigationManager Navigation
+@inject EventsService EventsService
+
+<PageTitle>Lista de Eventos</PageTitle>
+
+<h1>Lista de Eventos</h1>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Ubicación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var evento in EventsService.GetEvents())
+            {
+                <tr @key="evento.Id">
+                    <td>@evento.Nombre</td>
+                    <td>@evento.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@evento.Ubicacion</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick="() => NavigateToDetail(evento.Id)">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private void NavigateToDetail(int id)
+    {
+        Navigation.NavigateTo($"/event-detail/{id}");
+    }
+}
