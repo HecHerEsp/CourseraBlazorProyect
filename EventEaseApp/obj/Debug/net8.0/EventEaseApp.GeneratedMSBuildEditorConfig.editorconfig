@@ -30,6 +30,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXZlbnREZXRhaWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/Pages/EventRegistration.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXZlbnRSZWdpc3RyYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/djwaste/GIT/CourseraBlazorProyect/EventEaseApp/Pages/EventsList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXZlbnRzTGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

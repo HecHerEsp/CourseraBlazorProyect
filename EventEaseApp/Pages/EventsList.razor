@@ -14,19 +14,29 @@
                 <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Ubicación</th>
+                <th>Registrados</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var evento in EventsService.GetEvents())
             {
+                var count = EventsService.GetRegistrationCountForEvent(evento.Id);
                 <tr @key="evento.Id">
                     <td>@evento.Nombre</td>
                     <td>@evento.Fecha.ToString("dd/MM/yyyy")</td>
                     <td>@evento.Ubicacion</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" @onclick="() => NavigateToDetail(evento.Id)">
+                        <a href="#" @onclick:preventDefault @onclick="() => ShowRegistrations(evento)" class="text-decoration-none">
+                            @count
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm me-2" @onclick="() => NavigateToDetail(evento.Id)">
                             <i class="bi bi-pencil-square"></i> Editar
+                        </button>
+                        <button class="btn btn-success btn-sm" @onclick="() => NavigateToRegistration(evento.Id)">
+                            <i class="bi bi-person-plus"></i> Registrarse
                         </button>
                     </td>
                 </tr>
@@ -35,9 +45,78 @@
     </table>
 </div>
 
+<!-- Modal -->
+@if (ShowModal && SelectedEvent != null)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Usuarios Registrados - @SelectedEvent.Nombre</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    @if (SelectedRegistrations.Count == 0)
+                    {
+                        <div class="alert alert-info">
+                            <h4>No hay usuarios registrados</h4>
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo Electrónico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var reg in SelectedRegistrations)
+                                {
+                                    <tr>
+                                        <td>@reg.Nombre</td>
+                                        <td>@reg.Email</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
+    private bool ShowModal { get; set; } = false;
+    private EventModel? SelectedEvent { get; set; }
+    private List<RegistrationModel> SelectedRegistrations { get; set; } = new();
+
     private void NavigateToDetail(int id)
     {
         Navigation.NavigateTo($"/event-detail/{id}");
+    }
+
+    private void NavigateToRegistration(int id)
+    {
+        Navigation.NavigateTo($"/event-registration/{id}");
+    }
+
+    private void ShowRegistrations(EventModel evento)
+    {
+        SelectedEvent = evento;
+        SelectedRegistrations = EventsService.GetRegistrationsForEvent(evento.Id);
+        ShowModal = true;
+    }
+
+    private void CloseModal()
+    {
+        ShowModal = false;
+        SelectedEvent = null;
+        SelectedRegistrations.Clear();
     }
 }

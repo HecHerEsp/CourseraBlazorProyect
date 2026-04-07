@@ -1,0 +1,76 @@
+@page "/event-registration/{id:int}"
+
+@inject EventsService EventsService
+@inject NavigationManager Navigation
+
+<PageTitle>Registro para Evento</PageTitle>
+
+@if (Evento == null)
+{
+    <div class="alert alert-danger">
+        <h4>Evento no encontrado</h4>
+        <p>El evento con ID @Id no existe. Redirigiendo a la lista de eventos...</p>
+    </div>
+    @code {
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender && Evento == null)
+            {
+                await Task.Delay(2000);
+                Navigation.NavigateTo("/events");
+            }
+        }
+    }
+}
+else
+{
+    <h1>Registro para @Evento.Nombre</h1>
+
+    <EditForm Model="@Registration" OnValidSubmit="RegisterUser">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <InputText class="form-control" @bind-Value="Registration.Nombre" />
+            <ValidationMessage For="@(() => Registration.Nombre)" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo Electrónico</label>
+            <InputText class="form-control" @bind-Value="Registration.Email" />
+            <ValidationMessage For="@(() => Registration.Email)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+        <button type="button" class="btn btn-secondary ms-2" @onclick="GoBack">Volver</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private EventModel? Evento { get; set; }
+    private RegistrationModel Registration { get; set; } = new();
+
+    protected override void OnParametersSet()
+    {
+        Evento = EventsService.GetEventById(Id);
+        if (Evento != null)
+        {
+            Registration.EventId = Id;
+        }
+    }
+
+    private void RegisterUser()
+    {
+        EventsService.AddRegistration(Registration);
+        Navigation.NavigateTo("/events");
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/events");
+    }
+}
